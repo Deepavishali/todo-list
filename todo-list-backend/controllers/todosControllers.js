@@ -28,23 +28,33 @@ todosController.createTodo = async (req, res) => {
 todosController.updateTodo = async (req, res) => {
   try {
     const todo = await Todo.findById(req.params.id);
+    console.log("Todo before update:", todo);
+
     if (!todo) throw Error('Todo not found');
 
     todo.isCompleted = req.body.isCompleted;
+    todo.task = req.body.task;
 
     const updatedTodo = await todo.save();
-    res.json(updatedTodo);
+    console.log("Updated todo:", updatedTodo);
+
+    res.json({
+      message:"Updated successfully",
+      updatedTodo
+    });
   } catch (err) {
+    console.log("Error:", err);
     res.status(400).json({ message: err.message });
   }
 };
 
+
+
 todosController.deleteTodo = async (req, res) => {
   try {
-    const todo = await Todo.findById(req.params.id);
+    const todo = await Todo.findOneAndDelete({ _id: req.params.id });
     if (!todo) throw Error('Todo not found');
 
-    await todo.remove();
     res.json({ message: 'Todo deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
