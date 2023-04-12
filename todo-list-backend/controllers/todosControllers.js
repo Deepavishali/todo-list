@@ -23,7 +23,19 @@ todosController.createTodo = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
+  
+  if (req.body.isCompleted) {
+    try {
+      const updatedTodo = await Todo.findByIdAndUpdate(newTodo._id, { isCompleted: true }, { new: true });
+      console.log(updatedTodo);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 };
+
+
+
 
 todosController.updateTodo = async (req, res) => {
   try {

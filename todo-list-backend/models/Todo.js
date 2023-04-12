@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const todoSchema = new Schema({
   task: {
     type: String,
-    required: true
+    required:true
   },
   isCompleted: {
     type: Boolean,

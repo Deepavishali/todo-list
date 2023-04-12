@@ -11,7 +11,7 @@ import {
 import { DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
-const api = process.env.api_backend
+
 
 function TodoList({ initialTodos }) {
   const [todos, setTodos] = useState(initialTodos);
@@ -24,10 +24,10 @@ function TodoList({ initialTodos }) {
 
   const handleNewTodoSubmit = (event) => {
     event.preventDefault();
-    const data = { text: newTodo, completed: false };
-    axios.post(`/${api}/todos`, data)
+    const data = { task: newTodo, completed: false };
+    axios.post("https://todo-list-git-master-deepavishali.vercel.app/todos", data)
       .then(response => {
-        setTodos([...todos, response.data]);
+        setTodos([...todos, response.data.task]);
         setNewTodo('');
         toast({
           title: 'Todo added.',
@@ -50,7 +50,7 @@ function TodoList({ initialTodos }) {
   const handleCheckboxClick = (id) => {
     const index = todos.findIndex(todo => todo._id === id);
     const updatedTodo = { ...todos[index], completed: !todos[index].completed };
-    axios.put(`/${api}/todos/${id}`, updatedTodo)
+    axios.put(`https://todo-list-git-master-deepavishali.vercel.app/todos/${id}`, updatedTodo)
       .then(response => {
         const updatedTodos = [...todos];
         updatedTodos[index] = response.data;
@@ -74,7 +74,7 @@ function TodoList({ initialTodos }) {
   };
 
   const handleDeleteClick = (id) => {
-    axios.delete(`/${api}/todos/${id}`)
+    axios.delete(`https://todo-list-git-master-deepavishali.vercel.app/todos/${id}`)
       .then(() => {
         const updatedTodos = todos.filter(todo => todo._id !== id);
         setTodos(updatedTodos);
